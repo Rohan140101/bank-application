@@ -10,7 +10,7 @@ const path = require('path');
 const ccpPath = path.resolve(__dirname, '..', '..', 'network', 'connection-org1.json');
 
 
-async function main() {
+async function getAccountDetails(accountNumber) {
     try {
 
         // Create a new file system based wallet for managing identities.
@@ -37,8 +37,9 @@ async function main() {
         const contract = network.getContract('bank');
 
         // Evaluate the specified transaction.
-        const result = await contract.evaluateTransaction('accountDetails','00002');
-        console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        const result = await contract.evaluateTransaction('accountDetails',accountNumber);
+        // console.log(`Transaction has been evaluated, result is: ${result.toString()}`);
+        return result.toString();
 
     } catch (error) {
         console.error(`Failed to evaluate transaction: ${error}`);
@@ -46,4 +47,4 @@ async function main() {
     }
 }
 
-main();
+module.exports = {getAccountDetails}

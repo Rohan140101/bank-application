@@ -10,7 +10,7 @@ const path = require('path');
 const ccpPath = path.resolve(__dirname, '..', '..', 'network', 'connection-org1.json');
 
 
-async function main() {
+async function transferMoney(senderAccountNumber, receiverAccountNumber, amount) {
     try {
 
         // Create a new file system based wallet for managing identities.
@@ -37,7 +37,7 @@ async function main() {
         const contract = network.getContract('bank');
 
         // Submit the specified transaction.
-        await contract.submitTransaction('transferMoney', '00002', '34125', '10000');
+        await contract.submitTransaction('transferMoney', senderAccountNumber, receiverAccountNumber, amount);
         console.log('Transaction has been submitted');
 
         // Disconnect from the gateway.
@@ -49,4 +49,4 @@ async function main() {
     }
 }
 
-main();
+module.exports = {transferMoney}

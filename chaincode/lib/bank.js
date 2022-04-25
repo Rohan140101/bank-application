@@ -76,12 +76,53 @@ class Bank extends Contract {
             type,
         };
 
-        
-        // var id = 9;
-
         await ctx.stub.putState('Account' + accountNumber, Buffer.from(JSON.stringify(account)));
         console.info('============= END : Create Account ===========');
     }
+
+    async depositMoney(ctx, accountNumber, amount) {
+        console.info('============= START : Deposit Money ===========');
+        // var accountNumber = Math.floor(Math.random()*100000);
+        var amount = Number(amount);
+        var key = 'Account' + accountNumber;
+        const accountAsBytes = await ctx.stub.getState(key); 
+
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${accountNumber} does not exist`);
+        }
+
+        const account = JSON.parse(accountAsBytes.toString());
+
+        account.balance += amount
+
+        await ctx.stub.putState(key, Buffer.from(JSON.stringify(account)));
+        console.info('============= END : Deposit Money ===========');
+    }
+
+    async withdrawMoney(ctx, accountNumber, amount) {
+        console.info('============= START : Withdraw Money ===========');
+        // var accountNumber = Math.floor(Math.random()*100000);
+        var amount = Number(amount);
+        var key = 'Account' + accountNumber;
+        const accountAsBytes = await ctx.stub.getState(key); 
+
+        if (!accountAsBytes || accountAsBytes.length === 0) {
+            throw new Error(`${accountNumber} does not exist`);
+        }
+
+        const account = JSON.parse(accountAsBytes.toString());
+        if(account.balance < amount) {
+            throw new Error('Insufficient Balance')
+        }
+        else {
+            account.balance -= amount
+        }
+        
+        await ctx.stub.putState(key, Buffer.from(JSON.stringify(account)));
+        console.info('============= END : Withdraw Money ===========');
+    }
+
+
 
     async queryAllAccounts(ctx) {
         const startKey = 'Account0';

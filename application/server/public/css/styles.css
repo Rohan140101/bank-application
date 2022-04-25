@@ -1,0 +1,17 @@
+.outer-box-class{
+    width:600px;
+    height:600px;
+    
+}
+.outer-box-class > .card-title{
+    font-size: 55px;
+    font-family: cursive;
+} 
+.label-text{
+    font-size: 30px;
+    font-family: Verdana;
+}
+.fa{
+    color: green;
+    font-size:100px;
+}
